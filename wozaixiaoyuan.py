@@ -323,7 +323,7 @@ class wozaixiaoyuan:
 
 
 if __name__ == '__main__':
-    with open('系统日志/admin.txt') as f:
+    with open('系统日志/admin.txt', 'r', encoding='UTF-8') as f:
         admin = eval(f.read())
     aa = wozaixiaoyuan()
     aa.login(admin['username'], admin['password'])
