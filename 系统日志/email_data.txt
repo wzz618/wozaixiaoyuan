@@ -1,0 +1,5 @@
+{
+    '发信邮箱': 'tips@mail.trafficwzz.com',
+    '邮箱授权码': 'x6TfJXQyYdxnucSs',
+    '发信服务器': 'smtp.exmail.qq.com'
+}
