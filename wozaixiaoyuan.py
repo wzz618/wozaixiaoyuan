@@ -317,6 +317,7 @@ class wozaixiaoyuan:
         # 重写了下输出
         if self.log is not None:
             self.log.write_data(inf)
+            print(str(time.strftime("%H:%M:%S")) + '\t' + inf)
         else:
             print(str(time.strftime("%H:%M:%S")) + '\t' + inf)
 

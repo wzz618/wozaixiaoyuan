@@ -2,6 +2,7 @@ import pandas as pd
 import time
 import send_email
 import log_management
+import wozaixiaoyuan
 
 __version__ = '3.0'
 
@@ -10,12 +11,14 @@ class tip_system:
     def __init__(self, main_path):
         self._main_path = main_path
         self._tip_time_path = self._main_path + r'\系统日志\tip_time.txt'  # 提醒时间的存储位置
+        self._admin = self._main_path + r'\系统日志\admin.txt'
         self._admin_path = self._main_path + r'\系统日志\admin_data.txt'  # 提醒时间的存储位置
         self._file_path = self._main_path + r'\用户信息\班级成员信息.xlsx'  # 班级成员的信息位置
 
         self.log = log_management.log_management(current_dir=self._main_path)  # 日志对象
 
         self.admin = None  # 管理员 list
+        self.admin_data = None  # 管理员的账号信息
         self.file = None  # 人员姓名和qq号
         self.tip_time_inf = None  # 提醒事项和时间
         self.read_config()  # 上述三个的信息
@@ -32,6 +35,9 @@ class tip_system:
             f.close()
         with open(self._admin_path, 'r+', encoding='UTF-8') as f:
             self.admin = eval(f.read())
+            f.close()
+        with open(self._admin, 'r+', encoding='UTF-8') as f:
+            self.admin_data = eval(f.read())
             f.close()
         self.log.write_data('信息读入完成')
 
@@ -63,11 +69,24 @@ class tip_system:
     def Run(self):
         try:
             while True:
-                if self.in_tips_time() is not None:
-                    ready_key = self.in_tips_time()  # 获得当前的提醒类型
+                ready_key = self.in_tips_time()   # 获得当前的提醒类型
+                if ready_key is not None:
+                    wzxy = wozaixiaoyuan.wozaixiaoyuan(log=self.log)
+                    wzxy.login(self.admin_data['username'], self.admin_data['password'])
+                    name_list = self.tip(wzxy, ready_key)
+                    if name_list is None:
+
                     print('a')
         except Exception as e:
             admin_email = send_email.email_obj()  # 登录邮箱
+
+    def tip(self, wzxy, inf):
+        if inf == '晨检':
+            return wzxy.get_HeatUsers(seq=1)
+        elif inf == '午检':
+            return wzxy.get_HeatUsers(seq=2)
+        elif inf == '签到':
+            return wzxy.get_SignResult()
 
 
 def Get_email_address(file, name_list):  # 获得文件中的qq邮箱
