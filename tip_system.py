@@ -141,6 +141,8 @@ class tip_system:
             return wzxy.heat(seq=1)
         elif inf == '午检':
             return wzxy.heat(seq=2)
+        elif inf == '签到':
+            return wzxy.sign()
 
     def _sleep(self):
         now_time = time.strftime("%H:%M:%S")  # 获得当前的时间
