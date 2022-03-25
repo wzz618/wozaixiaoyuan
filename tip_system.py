@@ -80,7 +80,7 @@ class tip_system:
                         email_Subject = '{}打卡提醒'.format(ready_key)
                         for key in self.admin:  # 和管理员发消息
                             qq_email = Get_email_address(self.file, [key])  # 管理员的qq邮箱
-                            email_content = f'尊敬的2019340203班管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
+                            email_content = f'管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
                                             f'您的班级成员已经全部完成{ready_key}打卡了\n。 '
                             admin_email.change_email_inf_to(to_addr=qq_email, email_Subject=email_Subject,
                                                             email_content=email_content)
@@ -91,7 +91,7 @@ class tip_system:
                         email_Subject = '{}打卡提醒QAQ'.format(ready_key)
                         qq_email = Get_email_address(self.file, name_list)  # 成员的qq邮箱dict
                         for name in name_list:
-                            email_content = f'尊敬的2019340203班成员{name}，您好\n现在北京时间{time.strftime("%H:%M:%S")}，' \
+                            email_content = f'成员{name}，您好\n现在北京时间{time.strftime("%H:%M:%S")}，' \
                                             f'而您尚未完成健康打卡，请及时完成{ready_key}打卡。\n（退订回复：0）\n注：本消息无法退订'
                             admin_email.change_email_inf_to(to_addr=qq_email[name], email_Subject=email_Subject,
                                                             email_content=email_content)
@@ -106,7 +106,7 @@ class tip_system:
                         # 给管理员发送信息
                         for key in self.admin:  # 和管理员发消息
                             qq_email = Get_email_address(self.file, [key])  # 管理员的qq邮箱
-                            email_content = f'尊敬的2019340203班管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
+                            email_content = f'管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
                                             f'您的班级成员已经全部完成{ready_key}打卡了\n。 '
                             admin_email.change_email_inf_to(to_addr=qq_email[key], email_Subject=email_Subject,
                                                             email_content=email_content)
@@ -119,7 +119,7 @@ class tip_system:
             email_Subject = '错误退出提醒'
             for key in self.admin:  # 和管理员发消息
                 qq_email = Get_email_address(self.file, [key])  # 管理员的qq邮箱
-                email_content = f'尊敬的2019340203班管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
+                email_content = f'管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
                                 f'程序错误退出，退出错误类型为{e}\n。 '
                 admin_email.change_email_inf_to(to_addr=qq_email, email_Subject=email_Subject,
                                                 email_content=email_content)
