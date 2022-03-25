@@ -24,9 +24,7 @@ class tip_system:
         self.read_config()  # 上述三个的信息
 
         self._print('程序初始化完成')
-
-        self.in_tips_time()
-        self.Run()
+        # self.Run()
 
     def read_config(self):  # 读取信息，丰富对象属性中的一些信息
         self.file = pd.read_excel(self._main_path + r'\用户信息\班级成员信息.xlsx')
@@ -82,7 +80,7 @@ class tip_system:
                             qq_email = Get_email_address(self.file, [key])  # 管理员的qq邮箱
                             email_content = f'管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
                                             f'您的班级成员已经全部完成{ready_key}打卡了\n。 '
-                            admin_email.change_email_inf_to(to_addr=qq_email, email_Subject=email_Subject,
+                            admin_email.change_email_inf_to(to_addr=qq_email[key], email_Subject=email_Subject,
                                                             email_content=email_content)
                             admin_email.send()
                             self._print(f'已经给管理员{key}发送信息')
@@ -121,7 +119,7 @@ class tip_system:
                 qq_email = Get_email_address(self.file, [key])  # 管理员的qq邮箱
                 email_content = f'管理员{key}，您好\n截止目前{time.strftime("%H:%M:%S")}，' \
                                 f'程序错误退出，退出错误类型为{e}\n。 '
-                admin_email.change_email_inf_to(to_addr=qq_email, email_Subject=email_Subject,
+                admin_email.change_email_inf_to(to_addr=qq_email[key], email_Subject=email_Subject,
                                                 email_content=email_content)
                 admin_email.send()
                 self._print(email_content)
@@ -179,10 +177,6 @@ def Get_email_address(file, name_list):  # 获得文件中的qq邮箱
     address_dict = {}
     if len(name_list) == 0:
         pass
-    elif len(name_list) == 1:
-        qq = file.loc[file['姓名'] == name_list[0], 'QQ号'].values[0]
-        qq_email = str(qq) + '@qq.com'
-        return qq_email
     else:
         for i in range(len(name_list)):  # 依次编辑文件
             name_i = name_list[i]
@@ -207,5 +201,6 @@ def to_StrTime(now_seconds):  # 把s转化为字符串
 
 
 if __name__ == '__main__':
-    tip_system(main_path=r'D:\小王的仓库\2号仓库（用于pycharm的存储）\我在校园自动提示2')
+    aa = tip_system(main_path=r'D:\小王的仓库\2号仓库（用于pycharm的存储）\我在校园自动提示2')
+    aa.Run()
 
