@@ -1,0 +1,6 @@
+{
+'姓名': 'xxx',
+'username': 'xxxxxxx',
+'password': 'xxxxxxxxx',
+'dormitory_name': 'xxxxx'
+}
