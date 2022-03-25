@@ -12,7 +12,7 @@ class wozaixiaoyuan:
             self.session = session_parent
         self.cookies = None
 
-        self.log = None   # 日志对象
+        self.log = None  # 日志对象
 
     def login(self, username, password):  # 登入账号，更新系统的session
         login_url = 'https://gw.wozaixiaoyuan.com/basicinfo/mobile/login/username'  # 目标网址
@@ -257,7 +257,7 @@ class wozaixiaoyuan:
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
                           'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
                           'MiniProgramEnv/Windows WindowsWechat',
-            'content-type': 'application/x-www-form-urlencoded',   # 注意，这个不是application/json
+            'content-type': 'application/x-www-form-urlencoded',  # 注意，这个不是application/json
             'Accept-Encoding': 'gzip, deflate, br'
         }
         getSignMessage_data = {
@@ -275,17 +275,11 @@ class wozaixiaoyuan:
             'content-type': 'application/json',
             'Accept-Encoding': 'gzip, deflate, br'
         }
-        sign_data = {
-            "id": "",
-            "signId": "",
-            "latitude": "34.29318",
-            "longitude": "108.94712",
-            "country": "中国",
-            "province": "陕西省",
-            "city": "西安市",
-            "district": "问远路",
-            "township": "汉城街道"
-        }  # 签到要提交的信息
+        sign_data = '{"id": "id_num","signId": "signId_num", "latitude": "34.2931800000","longitude": ' \
+                    '"108.9471200000", ' \
+                    '"country": "中国","province": "陕西省","city": "西安市","district": "问远路","township": "汉城街道"} '
+        # 必须用字符串，传入的data只认二进制。
+        # 用str()转化字典，会存在转义字符，两种的二进制代码不同
         try:
             res = self.session.post(url=getSignMessage_url, headers=getSignMessage_headers, data=getSignMessage_data)
             if json.loads(res.text)['code'] == 0:
@@ -295,8 +289,9 @@ class wozaixiaoyuan:
                     id = json.loads(res.text)['data'][0]['id']
                     logId = json.loads(res.text)['data'][0]['logId']
                     # 更新签到信息
-                    sign_data['id'] = logId
-                    sign_data['signId'] = id
+                    sign_data = sign_data.replace("id_num", logId)
+                    sign_data = sign_data.replace("signId_num", id)
+                    sign_data = str(sign_data).encode('utf-8')
                     self._print('成功获得当天的签到信息')
                     try:
                         res = self.session.post(url=sign_url, headers=sign_headers, data=sign_data)
@@ -327,4 +322,4 @@ if __name__ == '__main__':
         admin = eval(f.read())
     aa = wozaixiaoyuan()
     aa.login(admin['username'], admin['password'])
-    aa.heat(seq=1)
+    aa.get_SignResult()

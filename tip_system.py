@@ -21,6 +21,7 @@ class tip_system:
         self.admin_data = None  # 管理员的账号信息
         self.file = None  # 人员姓名和qq号
         self.tip_time_inf = None  # 提醒事项和时间
+        self.tip_time_inf_now = None  # 当前需要提醒的时间和事项，当全部人完成时候，则当天的该类型移出，跟新天数后，才恢复
         self.read_config()  # 上述三个的信息
 
         self._print('程序初始化完成')
@@ -30,7 +31,8 @@ class tip_system:
         self.file = pd.read_excel(self._main_path + r'\用户信息\班级成员信息.xlsx')
         with open(self._tip_time_path, 'r+', encoding='UTF-8') as f:
             self.tip_time_inf = eval(f.read())
-            f.close()
+            self.tip_time_inf_now = self.tip_time_inf
+        f.close()
         with open(self._admin_path, 'r+', encoding='UTF-8') as f:
             self.admin = eval(f.read())
             f.close()
@@ -46,8 +48,8 @@ class tip_system:
         # 判断是否在提醒时间
         flag = 0  # 判断是否属于提醒时间
         ready_key = None  # 目前的提醒类型
-        for key in self.tip_time_inf:
-            for tips_time in self.tip_time_inf[key]:
+        for key in self.tip_time_inf_now:
+            for tips_time in self.tip_time_inf_now[key]:
                 tips_time = seconds(tips_time)  # 提醒的时间
                 if abs(now_time - tips_time) <= 60:  # 如果符合则退出
                     flag = 1
@@ -83,6 +85,7 @@ class tip_system:
                             admin_email.change_email_inf_to(to_addr=qq_email[key], email_Subject=email_Subject,
                                                             email_content=email_content)
                             admin_email.send()
+                            del self.tip_time_inf_now[ready_key]
                             self._print(f'已经给管理员{key}发送信息')
                     else:
                         # 给成员一一发送信息
@@ -90,7 +93,7 @@ class tip_system:
                         qq_email = Get_email_address(self.file, name_list)  # 成员的qq邮箱dict
                         for name in name_list:
                             email_content = f'成员{name}，您好\n现在北京时间{time.strftime("%H:%M:%S")}，' \
-                                            f'而您尚未完成健康打卡，请及时完成{ready_key}打卡。\n（退订回复：0）\n注：本消息无法退订'
+                                            f'而您尚未完成打卡，请及时完成{ready_key}打卡。\n（退订回复：0）\n注：本消息无法退订'
                             admin_email.change_email_inf_to(to_addr=qq_email[name], email_Subject=email_Subject,
                                                             email_content=email_content)
                             admin_email.send()
@@ -146,14 +149,17 @@ class tip_system:
         sleep_time = 0  # 需要睡眠的时间
         # 排序需要提醒的时间列表
         tip_time_list = []
-        for key in self.tip_time_inf:
-            for time_inf in self.tip_time_inf[key]:
+        if len(self.tip_time_inf_now) != 0:
+            self.tip_time_inf_now = self.tip_time_inf
+        for key in self.tip_time_inf_now:
+            for time_inf in self.tip_time_inf_now[key]:
                 tip_time_list.append(seconds(time_inf))  # 转化为s
         tip_time_list = sorted(tip_time_list)  # 排序
 
         if now_time_s > tip_time_list[-1]:
             # 如果超过当天的提醒时间
             sleep_time = 24 * 60 * 60 + tip_time_list[0] + now_time_s
+            self.tip_time_inf_now = self.tip_time_inf  # 跟新当天需要提醒的事项
             self._print('即将睡眠{}s，预计次日{}点苏醒'.format(sleep_time, to_StrTime(tip_time_list[0])))
         else:
             # 如果未超过当天的提醒时间
