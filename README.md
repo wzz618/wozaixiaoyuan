@@ -13,6 +13,10 @@
 ## get_SignResult(self)
 获得未签到的人员名单
 ## get_HealthResult(self)
+获得未健康打卡的人员名单
 ## health(self, dormitory_name)
+健康打卡的接口
 ## heat(self, seq=1)
+日检日报的接口
 ## sign(self)
+签到的接口
