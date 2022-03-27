@@ -77,6 +77,8 @@ class frame(wx.Frame):
         self.Layout()
 
     def read_config(self):  # 读取文件
+        if not os.path.exists(os.path.dirname(self.user_data_path)):  # 如果文件目录不在，则创建目录
+            os.mkdir(os.path.dirname(self.user_data_path))
         if not os.path.exists(self.user_data_path):
             f = open(self.user_data_path, 'w+')
             data = {
