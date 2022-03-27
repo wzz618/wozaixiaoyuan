@@ -42,6 +42,10 @@ class log_management:
                 f.write(data)
         return None
 
+    @property
+    def document_path(self):
+        return self._document_path
+
 
 if __name__ == '__main__':
     obj = log_management()

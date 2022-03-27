@@ -12,7 +12,7 @@ class wozaixiaoyuan:
             self.session = session_parent
         self.cookies = None
 
-        self.log = None  # 日志对象
+        self.log = log  # 日志对象
 
     def login(self, username, password):  # 登入账号，更新系统的session
         login_url = 'https://gw.wozaixiaoyuan.com/basicinfo/mobile/login/username'  # 目标网址
@@ -322,4 +322,4 @@ if __name__ == '__main__':
         admin = eval(f.read())
     aa = wozaixiaoyuan()
     aa.login(admin['username'], admin['password'])
-    aa.get_SignResult()
+    aa.sign()
