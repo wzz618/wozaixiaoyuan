@@ -10,7 +10,7 @@ class frame(wx.Frame):
         self.user_data = self.read_config()
 
         # 定义容器
-        wx.Frame.__init__(self, None, -1, '我在校园', pos=(100, 100), size=(400, 250))
+        wx.Frame.__init__(self, None, -1, '我在校园自助签到系统', pos=(100, 100), size=(400, 250))
         self.Center()
 
         # 总容器
@@ -46,6 +46,10 @@ class frame(wx.Frame):
         sizer_user_dormitory.Add(TextCtrl_user_dormitory, proportion=2, flag=wx.EXPAND | wx.ALL, border=5)
         sizer_input.Add(sizer_user_dormitory, proportion=0, flag=wx.EXPAND | wx.ALL, border=3)
         self.Bind(wx.EVT_TEXT, lambda evt, textCtr='宿舍号': self.evt_txt(evt, textCtr), TextCtrl_user_dormitory)  # 事件
+        self.bt_help = wx.Button(self, label='帮助', size=(25, 25))
+        sizer_user_dormitory.Add(self.bt_help, proportion=2, flag=wx.EXPAND | wx.ALL, border=5)
+
+
 
         # 选择界面
         sizer_choise = wx.BoxSizer()
@@ -57,11 +61,13 @@ class frame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.btn_click, self.bt_heat1)
         self.Bind(wx.EVT_BUTTON, self.btn_click, self.bt_heat2)
         self.Bind(wx.EVT_BUTTON, self.btn_click, self.bt_sign)
+        self.Bind(wx.EVT_BUTTON, self.btn_chick_help, self.bt_help)
 
         sizer_choise.Add(self.bt_heat1, proportion=1, flag=wx.ALL, border=5)
         sizer_choise.Add(self.bt_heat2, proportion=1, flag=wx.ALL, border=5)
         sizer_choise.Add(self.bt_sign, proportion=1, flag=wx.ALL, border=5)
 
+        # 帮助界面
         # 组装容器
         sizer.Add(sizer_input, proportion=3, flag=wx.EXPAND | wx.ALL, border=5)
         sizer.Add(sizer_choise, proportion=2, flag=wx.EXPAND | wx.ALL, border=5)
@@ -104,6 +110,14 @@ class frame(wx.Frame):
             log_data = f.read()
             dlg = wx.MessageDialog(None, log_data, u'操作提示')  #
             dlg.ShowModal()
+
+    def btn_chick_help(self, evt):
+        event = evt.GetEventObject()
+        if event.Label == '帮助':
+            txt = '源码地址:https://github.com/wzz618/wozaixiaoyuan.git\n联系QQ:3574403347'
+            dlg = wx.MessageDialog(None, txt, u'操作提示')  #
+            dlg.ShowModal()
+
 
     def evt_txt(self, evt, textCtr):
         event = evt.GetEventObject()
