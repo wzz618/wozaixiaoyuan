@@ -118,7 +118,6 @@ class frame(wx.Frame):
             dlg = wx.MessageDialog(None, txt, u'操作提示')  #
             dlg.ShowModal()
 
-
     def evt_txt(self, evt, textCtr):
         event = evt.GetEventObject()
         if textCtr == '账号':

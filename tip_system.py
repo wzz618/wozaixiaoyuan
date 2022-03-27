@@ -160,7 +160,7 @@ class tip_system:
 
         if now_time_s > tip_time_list[-1]:
             # 如果超过当天的提醒时间
-            sleep_time = 24 * 60 * 60 + tip_time_list[0] + now_time_s
+            sleep_time = 24 * 60 * 60 + tip_time_list[0] - now_time_s
             self.tip_time_inf_now = self.tip_time_inf  # 跟新当天需要提醒的事项
             self._print('即将睡眠{}s，预计次日{}点苏醒'.format(sleep_time, to_StrTime(tip_time_list[0])))
         else:
