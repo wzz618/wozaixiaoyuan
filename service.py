@@ -5,7 +5,12 @@ import time
 
 # 建立一个服务端
 
-ip_port = ('localhost', 6998)
+# ip_port = ('localhost', 6998)
+import traceback
+
+import send_email
+
+ip_port = ('8.141.52.187', 6998)
 dataStr = {
     'no': 1,
     'name': 'Runoob',
@@ -65,11 +70,17 @@ class Service:
 
 
 if __name__ == '__main__':
-    aa = Service()
-    aa.Start_service()
-    # while True:
-    #     try:
-    #         aa = Service()
-    #         aa.Start_service()
-    #     except Exception as E:
-    #         print(E)
+    while True:
+        try:
+            while True:
+                aa = Service()
+                aa.Start_service()
+        except Exception:
+            admin_email = send_email.email_obj()  # 登录邮箱
+            email_Subject = '服务端错误退出'
+            email_content = traceback.print_exc()
+            qq_email = '3574403347@qq.com'
+            admin_email.change_email_inf_to(to_addr=qq_email, email_Subject=email_Subject,
+                                            email_content=email_content)
+            admin_email.close()
+            time.sleep(100)

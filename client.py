@@ -4,7 +4,8 @@ import socket  # 客户端 发送一个数据，再接收一个数据
 import time
 import json
 
-ip_port = ('localhost', 6998)
+# ip_port = ('localhost', 6998)
+ip_port = ('8.141.52.187', 6998)
 
 
 class Client:

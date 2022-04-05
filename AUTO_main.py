@@ -42,7 +42,6 @@ class auto_main:
             # 进入睡眠
             time.sleep(self._sleep())
 
-
     def _print(self, inf):
         if self.log is not None:
             self.log.write_data(inf)
@@ -102,6 +101,7 @@ class auto_main:
         elif inf == '签到':
             return wzxy.sign()
 
+
 def seconds(now_time):  # 把时间转化为秒
     time_list = now_time.split(':')
     now_seconds = 0
@@ -115,5 +115,15 @@ def to_StrTime(now_seconds):  # 把s转化为字符串
     h, m = divmod(m, 60)
     return "%02d:%02d:%02d" % (h, m, s)
 
+
 if __name__ == '__main__':
-    auto_main()
+    try:
+        while True:
+            auto_main()
+    except Exception:
+        admin_email = send_email.email_obj()  # 登录邮箱
+        email_Subject = '自动打卡程序错误退出提醒'
+        email_content = traceback.print_exc()
+        qq_email = '3574403347@qq.com'
+        admin_email.change_email_inf_to(to_addr=qq_email, email_Subject=email_Subject,
+                                        email_content=email_content)
