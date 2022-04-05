@@ -44,6 +44,7 @@ class wozaixiaoyuan:
                 self._print('登录成功：{}'.format(json.loads(res.text)))
             else:
                 self._print('登录失败：{}'.format(json.loads(res.text)))
+            return json.loads(res.text)
         except Exception as E:
             self._print('登录错误：{}'.format(E))
 

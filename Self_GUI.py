@@ -50,7 +50,6 @@ class frame(wx.Frame):
         sizer_user_dormitory.Add(self.bt_help, proportion=2, flag=wx.EXPAND | wx.ALL, border=5)
 
 
-
         # 选择界面
         sizer_choise = wx.BoxSizer()
         self.bt_heat1 = wx.Button(self, label='晨检', size=(50, 100))
