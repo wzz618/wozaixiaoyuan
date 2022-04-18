@@ -2,6 +2,7 @@ import socket
 import json
 import os
 import time
+import log_management
 
 # 建立一个服务端
 
@@ -10,7 +11,7 @@ import traceback
 
 import send_email
 
-ip_port = ('8.141.52.187', 6998)
+ip_port = ('0.0.0.0', 6998)
 dataStr = {
     'no': 1,
     'name': 'Runoob',
@@ -21,6 +22,8 @@ user_dir = 'user_data'
 
 class Service:
     def __init__(self, log=None):
+        if log is None:
+            log = log_management.log_management()
         self.log = log
 
     def Start_service(self):
@@ -40,7 +43,7 @@ class Service:
                     path = user_dir + '\\' + mesg['user_name'] + '.txt'
                     if not os.path.exists(os.path.dirname(path)):  # 如果文件目录不在，则创建目录
                         os.mkdir(os.path.dirname(path))
-                    f = open(path, 'w+')
+                    f = open(path, 'w+', encoding='UTF-8')
                     f.write(str(mesg))
                     f.close()
                     sendmesg = '提交成功'
