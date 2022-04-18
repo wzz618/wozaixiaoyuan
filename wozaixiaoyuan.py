@@ -207,6 +207,7 @@ class wozaixiaoyuan:
                 self._print('健康打卡成功')
             else:
                 self._print('健康打卡失败：{}'.format(json.loads(res.text)['message']))
+            return json.loads(res.text)
         except Exception as E:
             self._print('健康打卡错误:{}'.format(E))
 
@@ -248,6 +249,7 @@ class wozaixiaoyuan:
                 self._print('日检日报成功')
             else:
                 self._print('日检日报失败：{}'.format(json.loads(res.text)['message']))
+            return json.loads(res.text)
         except Exception as E:
             self._print('日检日报错误{}'.format(E))
 
@@ -302,6 +304,7 @@ class wozaixiaoyuan:
                             self._print('签到成功')
                         else:
                             self._print('签到失败：{}'.format(json.loads(res.text)['message']))
+                        return json.loads(res.text)
                     except Exception as E:
                         self._print('签到错误{}'.format(E))
                 else:
