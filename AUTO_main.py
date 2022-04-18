@@ -11,27 +11,34 @@ class auto_main:
         self.user_path = 'user_data\\'
 
         self.log = log_management.log_management()
-        self.auto_time = eval(open(r'系统日志\auto_time.txt', 'r+', encoding='UTF-8').read())
+        with open(r'系统日志\auto_time.txt', 'r+', encoding='UTF-8') as f:
+            self.auto_time = eval(f.read())
+        self._print('准备开始运行')
         self.run()
 
     def run(self):
         while True:
+            with open(r'系统日志\auto_time.txt', 'r+', encoding='UTF-8') as f:
+                self.auto_time = eval(f.read())
             ready_key = self._in_tips_time()
             if ready_key is not None:
                 admin_email = send_email.email_obj()  # 登录邮箱
-                email_Subject = '{}提醒'.format(ready_key)
                 for user_name in os.listdir(self.user_path):
                     path = self.user_path + user_name
-                    user_data = eval(open(path, 'r', encoding='UTF-8').read())
+                    with open(path, 'r', encoding='UTF-8') as f:
+                        user_data = eval(f.read())
                     if user_data[ready_key] == 1:
                         try:
                             wzxy = wozaixiaoyuan.wozaixiaoyuan()
                             res = wzxy.login(user_data['user_name'], user_data['user_password'])
-                            if res == 0:
+                            if res['code'] == 0:
+                                email_Subject = '{}完成'.format(ready_key)
                                 res = self.help_do(wzxy, ready_key)
                                 email_content = '用户{}，你的打卡完成了，返回信息为{}'.format(user_data['user_name'], res)
                             else:
+                                email_Subject = '密码修改提醒！！！'.format(ready_key)
                                 email_content = '用户{}，您的密码{}已经失效，请及时在我在校园小程序更改密码'.format(user_data['user_name'], user_data['user_password'])
+                            self._print(email_content)
                             admin_email.change_email_inf_to(to_addr=user_data['user_email'], email_Subject=email_Subject,
                                                             email_content=email_content)
                             admin_email.send()
@@ -41,6 +48,7 @@ class auto_main:
                         pass
             # 进入睡眠
             time.sleep(self._sleep())
+            self._print('苏醒')
 
     def _print(self, inf):
         if self.log is not None:
