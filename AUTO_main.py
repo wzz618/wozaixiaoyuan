@@ -65,7 +65,7 @@ class auto_main:
         ready_key = None  # 目前的提醒类型
         for key in self.auto_time:
             tips_time = seconds(self.auto_time[key])  # 提醒的时间
-            if abs(now_time - tips_time) <= 60:  # 如果符合则退出
+            if abs(now_time - tips_time) <= 600:  # 如果符合则退出
                 flag = 1
                 ready_key = key  # 获得当前的提醒类型
                 break
