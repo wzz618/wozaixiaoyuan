@@ -238,7 +238,9 @@ class wozaixiaoyuan:
             'province': '陕西省',
             'township': '张家堡街道',
             'street': '未央路',
-            'areacode': '610112'
+            'areacode': '610112',
+            'timestampHeader': int(round(time.time() * 1000)),
+            'signatureHeader': ''
         }
         try:
             res = self.session.post(url=heat_url, headers=heat_headers, data=heat_data)
@@ -323,4 +325,4 @@ if __name__ == '__main__':
         admin = eval(f.read())
     aa = wozaixiaoyuan()
     aa.login(admin['username'], admin['password'])
-    aa.sign()
+    aa.heat(seq=1)
