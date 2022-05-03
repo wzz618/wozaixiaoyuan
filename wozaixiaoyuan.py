@@ -191,8 +191,8 @@ class wozaixiaoyuan:
         }
         health_data = {
             'answers': '["0","长安大学渭水校区{}","1","{}","36.0","没有","1","1","2"]'.format(dormitory_name, dormitory_name),
-            'latitude': '34.29318',
-            'longitude': '108.94712',
+            'latitude': '34.370877',
+            'longitude': '108.903912',
             'country': '中国',
             'city': '西安市',
             'district': '未央区',
@@ -231,8 +231,8 @@ class wozaixiaoyuan:
             'answers': '["0","无"]',
             'seq': '{}'.format(seq),
             'temperature': '36.1',
-            'latitude': '34.29318',
-            'longitude': '108.94712',
+            'latitude': '34.370877',
+            'longitude': '108.903912',
             'country': '中国',
             'city': '西安市',
             'district': '未央区',
@@ -280,8 +280,8 @@ class wozaixiaoyuan:
             'content-type': 'application/json',
             'Accept-Encoding': 'gzip, deflate, br'
         }
-        sign_data = '{"id": "id_num","signId": "signId_num", "latitude": "34.2931800000","longitude": ' \
-                    '"108.9471200000", ' \
+        sign_data = '{"id": "id_num","signId": "signId_num", "latitude": "34.3708770000","longitude": ' \
+                    '"108.9039120000", ' \
                     '"country": "中国","province": "陕西省","city": "西安市","district": "问远路","township": "汉城街道"} '
         # 必须用字符串，传入的data只认二进制。
         # 用str()转化字典，会存在转义字符，两种的二进制代码不同
