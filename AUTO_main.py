@@ -29,7 +29,14 @@ class auto_main:
                         user_data = eval(f.read())
                     if user_data[ready_key] == 1:
                         try:
-                            wzxy = wozaixiaoyuan.wozaixiaoyuan()
+                            if user_data.has_key('User-Agent'):
+                                if '默认' not in user_data['User-Agent']:
+                                    ua = user_data['User-Agent']
+                                else:
+                                    ua = None
+                            else:
+                                ua = None
+                            wzxy = wozaixiaoyuan.wozaixiaoyuan(ua=ua)
                             res = wzxy.login(user_data['user_name'], user_data['user_password'])
                             if res['code'] == 0:
                                 email_Subject = '{}完成'.format(ready_key)
@@ -37,9 +44,11 @@ class auto_main:
                                 email_content = '用户{}，你的打卡完成了，返回信息为{}'.format(user_data['user_name'], res)
                             else:
                                 email_Subject = '密码修改提醒！！！'.format(ready_key)
-                                email_content = '用户{}，您的密码{}已经失效，请及时在我在校园小程序更改密码'.format(user_data['user_name'], user_data['user_password'])
+                                email_content = '用户{}，您的密码{}已经失效，请及时在我在校园小程序更改密码'.format(user_data['user_name'],
+                                                                                         user_data['user_password'])
                             self._print(email_content)
-                            admin_email.change_email_inf_to(to_addr=user_data['user_email'], email_Subject=email_Subject,
+                            admin_email.change_email_inf_to(to_addr=user_data['user_email'],
+                                                            email_Subject=email_Subject,
                                                             email_content=email_content)
                             admin_email.send()
                         except Exception as E:
@@ -114,7 +123,7 @@ def seconds(now_time):  # 把时间转化为秒
     time_list = now_time.split(':')
     now_seconds = 0
     for i in range(len(time_list)):
-        now_seconds += int(time_list[i]) * pow(60, 2-i)  # 换算成s
+        now_seconds += int(time_list[i]) * pow(60, 2 - i)  # 换算成s
     return now_seconds
 
 

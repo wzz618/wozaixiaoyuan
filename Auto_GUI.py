@@ -11,7 +11,7 @@ class frame(wx.Frame):
         self.user_data = self.read_config()
 
         # 定义容器
-        wx.Frame.__init__(self, None, -1, '我在校园自动签到系统', pos=(100, 100), size=(400, 270))
+        wx.Frame.__init__(self, None, -1, '我在校园自动签到系统', pos=(100, 100), size=(400, 310))
         self.Center()
 
         # 总容器
@@ -22,6 +22,7 @@ class frame(wx.Frame):
         sizer_user_name = wx.BoxSizer()
         sizer_user_password = wx.BoxSizer()
         sizer_user_email = wx.BoxSizer()
+        sizer_User_Agent = wx.BoxSizer()
         sizer_user_dormitory = wx.BoxSizer()
         # 捆绑按钮
         # sizer_user_name
@@ -49,6 +50,14 @@ class frame(wx.Frame):
         sizer_input.Add(sizer_user_email, proportion=0, flag=wx.EXPAND | wx.ALL, border=3)
         self.Bind(wx.EVT_TEXT, lambda evt, textCtr='user_email': self.evt_txt(evt, textCtr), TextCtrl_user_email)  # 事件
 
+        # 'User-Agent'
+        txt_User_Agent = wx.StaticText(self, -1, r'User_Agent', style=wx.ST_NO_AUTORESIZE)  # 文字
+        TextCtrl_User_Agent = wx.TextCtrl(self, value=self.user_data['User-Agent'], style=wx.TE_LEFT)  # 输入框
+        sizer_User_Agent.Add(txt_User_Agent, proportion=0, border=5, flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_LEFT)
+        sizer_User_Agent.Add(TextCtrl_User_Agent, proportion=2, flag=wx.EXPAND | wx.ALL, border=5)
+        sizer_input.Add(sizer_User_Agent, proportion=0, flag=wx.EXPAND | wx.ALL, border=3)
+        self.Bind(wx.EVT_TEXT, lambda evt, textCtr='User—Agent': self.evt_txt(evt, textCtr), TextCtrl_User_Agent)  # 事件
+        
         # user_dormitory
         txt3 = wx.StaticText(self, -1, r'宿舍号', style=wx.ST_NO_AUTORESIZE)  # 文字
         TextCtrl_user_dormitory = wx.TextCtrl(self, value=self.user_data['user_dormitory'], style=wx.TE_LEFT)  # 输入框
@@ -58,8 +67,6 @@ class frame(wx.Frame):
         self.Bind(wx.EVT_TEXT, lambda evt, textCtr='user_dormitory': self.evt_txt(evt, textCtr), TextCtrl_user_dormitory)  # 事件
         self.bt_help = wx.Button(self, label='帮助', size=(25, 25))
         sizer_user_dormitory.Add(self.bt_help, proportion=2, flag=wx.EXPAND | wx.ALL, border=5)
-
-
 
         # 选择界面
         sizer_choise = wx.BoxSizer()
@@ -91,6 +98,7 @@ class frame(wx.Frame):
                 'user_dormitory': '请输入你的宿舍号码',
                 'user_email': '请输入你接受消息的邮箱',
                 'user_action': '',
+                'User-Agent': '默认值',
                 '晨检': 0,
                 '午检': 0,
                 '签到': 0
@@ -124,7 +132,8 @@ class frame(wx.Frame):
     def btn_chick_help(self, evt):
         event = evt.GetEventObject()
         if event.Label == '帮助':
-            txt = '源码地址:https://github.com/wzz618/wozaixiaoyuan.git\n联系QQ:3574403347\n如果密码错误，就手机登录我在校园重新修改一次密码再试试'
+            txt = '源码地址:https://github.com/wzz618/wozaixiaoyuan.git\n联系QQ:3574403347\n' \
+                  '如果密码错误，就手机登录我在校园重新修改一次密码再试试\nuser-agent如果不做修改则采用系统的默认值，但是建议把该项改成与手机的相同 '
             dlg = wx.MessageDialog(None, txt, u'操作提示')  #
             dlg.ShowModal()
 

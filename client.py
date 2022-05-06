@@ -45,6 +45,7 @@ if __name__ == '__main__':
         'user_dormitory': '请输入你的宿舍号码',
         'user_email': '请输入你接受消息的邮箱',
         'user_action': '提交',
+        'User-Agent': None,
         '晨检': 0,
         '午检': 0,
         '签到': 0

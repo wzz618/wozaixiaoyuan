@@ -4,12 +4,19 @@ import time
 
 
 class wozaixiaoyuan:
-    def __init__(self, session_parent=None, log=None):
+    def __init__(self, session_parent=None, log=None, ua=None):
         self.session_parent = session_parent  # 登录的session
         if session_parent is None:
             self.session = requests.session()
         else:
             self.session = session_parent
+        if ua is not None:
+            self._ua = ua  # 更改用户头
+            self.session.headers = {'User-Agent': self._ua}  # 更新User-Agent值
+        else:
+            self._ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/81.0.4044.138 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
+            'MiniProgramEnv/Windows WindowsWechat'
         self.cookies = None
 
         self.log = log  # 日志对象
@@ -25,9 +32,7 @@ class wozaixiaoyuan:
             'Connection': 'keep-alive',
             'Content-Length': '2',
             'Accept': 'application/json, text/plain, */*',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/81.0.4044.138 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'Content-Type': 'application/json;charset=UTF-8',
             'Sec-Fetch-Site': 'same-origin',
             'Sec-Fetch-Mode': 'cors',
@@ -37,7 +42,7 @@ class wozaixiaoyuan:
         }  # 表单的表头
         login_url = "{0}?username={1}&password={2}".format(login_url, str(login_data['username']),
                                                            str(login_data['password']))  # 通过 url 的 '？' 方法写入参数  # 更新url
-        res = self.session.post(url=login_url, headers=login_headers, data='{}')
+        res = self.session.post(url=login_url, data='{}', headers=login_headers)
         try:
             if json.loads(res.text)['code'] == 0:  # 返回值是0，说明登录成功，保留系统分配的JWSESSION，大致够用半个月，然后系统就会取消自动分配的JW..
                 self.session.cookies.set('JWSESSION', res.headers['JWSESSION'])  # 更新JWSESSION值
@@ -60,9 +65,7 @@ class wozaixiaoyuan:
         getHeatUsers_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -96,9 +99,7 @@ class wozaixiaoyuan:
         getList_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -111,9 +112,7 @@ class wozaixiaoyuan:
         getSignResult_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -146,9 +145,7 @@ class wozaixiaoyuan:
         get_HealthResult_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -183,9 +180,7 @@ class wozaixiaoyuan:
         health_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -221,9 +216,7 @@ class wozaixiaoyuan:
         heat_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',
             'Accept-Encoding': 'gzip, deflate, br',
         }
@@ -259,9 +252,7 @@ class wozaixiaoyuan:
         getSignMessage_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/x-www-form-urlencoded',  # 注意，这个不是application/json
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -274,9 +265,7 @@ class wozaixiaoyuan:
         sign_headers = {
             'Host': 'student.wozaixiaoyuan.com',
             'Connection': 'keep-alive',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI '
-                          'MiniProgramEnv/Windows WindowsWechat',
+            'User-Agent': self._ua,
             'content-type': 'application/json',
             'Accept-Encoding': 'gzip, deflate, br'
         }
@@ -326,6 +315,5 @@ class wozaixiaoyuan:
 if __name__ == '__main__':
     with open('系统日志/admin.txt', 'r', encoding='UTF-8') as f:
         admin = eval(f.read())
-    aa = wozaixiaoyuan()
+    aa = wozaixiaoyuan(ua=admin['User-Agent'])
     aa.login(admin['username'], admin['password'])
-    aa.heat(seq=1)
