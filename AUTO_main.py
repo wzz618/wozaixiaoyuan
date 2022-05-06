@@ -29,7 +29,7 @@ class auto_main:
                         user_data = eval(f.read())
                     if user_data[ready_key] == 1:
                         try:
-                            if user_data.has_key('User-Agent'):
+                            if 'User-Agent' in user_data.keys():
                                 if '默认' not in user_data['User-Agent']:
                                     ua = user_data['User-Agent']
                                 else:
@@ -74,7 +74,7 @@ class auto_main:
         ready_key = None  # 目前的提醒类型
         for key in self.auto_time:
             tips_time = seconds(self.auto_time[key])  # 提醒的时间
-            if abs(now_time - tips_time) <= 6000 * 3:  # 如果符合则退出
+            if -5 <= now_time - tips_time <= 6000 * 3:  # 如果符合则退出
                 flag = 1
                 ready_key = key  # 获得当前的提醒类型
                 break
