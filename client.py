@@ -5,7 +5,7 @@ import time
 import json
 
 # ip_port = ('localhost', 6998)
-ip_port = ('8.141.52.187', 6998)
+ip_port_1 = ('8.141.52.187', 6998)
 
 
 class Client:
@@ -13,7 +13,7 @@ class Client:
         self.log = log
         self.client = None
 
-    def send_inf(self, msg):
+    def send_inf(self, msg, ip_port=ip_port_1):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # 声明socket类型，同时生成链接对象
         self.client.connect(ip_port)  # 建立一个链接，连接到本地的6969端口
         # addr = client.accept()
@@ -49,5 +49,5 @@ if __name__ == '__main__':
         '晨检': 0,
         '午检': 0,
         '签到': 0
-    }
+    } 
     aa.send_inf(data)

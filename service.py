@@ -3,6 +3,7 @@ import json
 import os
 import time
 import log_management
+import data_store
 
 # 建立一个服务端
 
@@ -26,7 +27,8 @@ class Service:
             log = log_management.log_management()
         self.log = log
 
-    def Start_service(self):
+    def Start_service(self, port=6998):
+        ip_port = ('0.0.0.0', int(port))
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server.bind(ip_port)  # 绑定要监听的端口
         server.listen(5)  # 开始监听 表示可以使用五个链接排队
@@ -47,6 +49,16 @@ class Service:
                     f.write(str(mesg))
                     f.close()
                     sendmesg = '提交成功'
+                    # 邮箱提醒
+                    admin_email = send_email.email_obj()  # 登录邮箱
+                    email_Subject = '{}信息提交成功'.format(mesg['user_name'])
+                    email_content = '用户{}，你选择的服务为晨检{}，午检{}，晚签到'.\
+                        format(mesg['user_name'], mesg['晨检'], mesg['午检'], mesg['签到'])
+                    admin_email.change_email_inf_to(to_addr=mesg['user_email'],
+                                                    email_Subject=email_Subject,
+                                                    email_content=email_content)
+                    admin_email.send()
+                    admin_email.close()
                 elif mesg['user_action'] == '检查服务的时间':
                     path = '系统日志\\auto_time.txt'
                     f = open(path, 'r+', encoding='UTF-8')
@@ -73,11 +85,13 @@ class Service:
 
 
 if __name__ == '__main__':
+    port = input('输入端口号')
+    print('{}服务端系统开始运行'.format(data_store.academy[port]))
     while True:
         try:
             while True:
                 aa = Service()
-                aa.Start_service()
+                aa.Start_service(port)
         except Exception:
             admin_email = send_email.email_obj()  # 登录邮箱
             email_Subject = '服务端错误退出'

@@ -4,22 +4,22 @@ import time
 import wozaixiaoyuan
 import send_email
 import traceback
+import data_store
 
 
 class auto_main:
-    def __init__(self):
+    def __init__(self, port):
         self.user_path = 'user_data\\'
 
+        self.port = port
         self.log = log_management.log_management()
-        with open(r'系统日志\auto_time.txt', 'r+', encoding='UTF-8') as f:
-            self.auto_time = eval(f.read())
+        self.auto_time = data_store.auto_time[data_store.academy[self.port]]  # 自动打卡的时间
         self._print('准备开始运行')
         self.run()
 
     def run(self):
         while True:
-            with open(r'系统日志\auto_time.txt', 'r+', encoding='UTF-8') as f:
-                self.auto_time = eval(f.read())
+            self.auto_time = data_store.auto_time[data_store.academy[self.port]]  # 自动打卡的时间
             ready_key = self._in_tips_time()
             if ready_key is not None:
                 admin_email = send_email.email_obj()  # 登录邮箱
@@ -134,9 +134,11 @@ def to_StrTime(now_seconds):  # 把s转化为字符串
 
 
 if __name__ == '__main__':
+    port = input('输入端口号')
+    print('{}自动打卡系统开始运行'.format(data_store.academy[port]))
     try:
         while True:
-            auto_main()
+            auto_main(port=port)
     except Exception:
         admin_email = send_email.email_obj()  # 登录邮箱
         email_Subject = '自动打卡程序错误退出提醒'
