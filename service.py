@@ -52,7 +52,7 @@ class Service:
                     # 邮箱提醒
                     admin_email = send_email.email_obj()  # 登录邮箱
                     email_Subject = '{}信息提交成功'.format(mesg['user_name'])
-                    email_content = '用户{}，你选择的服务为晨检{}，午检{}，晚签到'.\
+                    email_content = '用户{}，你选择的服务为晨检{}，午检{}，晚签到{}'.\
                         format(mesg['user_name'], mesg['晨检'], mesg['午检'], mesg['签到'])
                     admin_email.change_email_inf_to(to_addr=mesg['user_email'],
                                                     email_Subject=email_Subject,
