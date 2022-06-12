@@ -87,6 +87,7 @@ class wozaixiaoyuan:
                     return not_heat_names_list
                 else:
                     self._print('班级成员全部完成日检日报')
+                    return []
             else:
                 self._print('获得班级成员日检日报信息失败：{}'.format(json.loads(res.text)['message']))  # 输出登录错误的错误原因
         except Exception as E:
@@ -136,6 +137,7 @@ class wozaixiaoyuan:
                     return not_sign_names_list
                 else:
                     self._print('班级成员全部完成签到')
+                    return []
         except Exception as E:
             print('获得班级成员签到信息失败:{}'.format(E))
 
@@ -307,9 +309,9 @@ class wozaixiaoyuan:
         # 重写了下输出
         if self.log is not None:
             self.log.write_data(inf)
-            print(str(time.strftime("%H:%M:%S")) + '\t' + inf)
+            print(str(time.strftime("%Y-%m-%d %H:%M:%S")) + '\t' + inf)
         else:
-            print(str(time.strftime("%H:%M:%S")) + '\t' + inf)
+            print(str(time.strftime("%Y-%m-%d %H:%M:%S")) + '\t' + inf)
 
 
 if __name__ == '__main__':

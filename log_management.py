@@ -1,4 +1,5 @@
 import os
+import time
 from time import strftime
 
 
@@ -41,6 +42,23 @@ class log_management:
                 data = strftime("%Y-%m-%d %H:%M:%S") + '\t' + arg + '\n'
                 f.write(data)
         return None
+
+    @property
+    def data(self):
+        with open(self._document_path, 'r') as f:
+            data = f.read()
+        return data
+
+    @property
+    def today_data(self):
+        today_data = ''
+        with open(self._document_path, 'r') as f:
+            for data in f.readlines():
+                if time.strftime("%Y-%m-%d") in data:
+                    today_data = today_data + data
+                else:
+                    pass
+        return today_data
 
     @property
     def document_path(self):
