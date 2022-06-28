@@ -52,7 +52,7 @@ class auto_main:
                                                             email_content=email_content)
                             admin_email.send()
                         except Exception as E:
-                            self._print(E)
+                            self._print(str(E))
                     else:
                         pass
             # 进入睡眠
